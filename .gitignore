@@ -1,10 +1,10 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Java template
+#.idea/workspace.xml
+.idea/
+
 target
 
-.idea
+#.idea/*.*
 
 *.iml
-
-
-*.class
