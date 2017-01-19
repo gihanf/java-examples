@@ -7,14 +7,14 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
-        Integer integer = new Integer(1);
+        Integer integer = 1;
 
         if (1 == integer) {
             System.out.println("can compare");
         }
 
         String s1 = "Hello";
-        String s2 = new String("Hello");
+        String s2 = "Hello";
 
         if ("Hello" == s2) {
             System.out.println("good");

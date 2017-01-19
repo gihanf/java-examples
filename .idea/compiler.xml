@@ -27,8 +27,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
-      <module name="HelloWorld" target="1.8" />
-      <module name="java-examples" target="1.5" />
+      <module name="java-examples" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

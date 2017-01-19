@@ -4,8 +4,10 @@ public class JavaNotes {
     private String someString;
 
     /*
+    Get this class to read all the files in this project and print out all the notes which are delimited in a special way
+
     - identifiers can be numbers, letters, or '$' or '_'. May not start with numbers
-    - switch statement can take all primitives and wrappers EXCEPT long, float, boolean
+    - switch statement can take all primitives and wrappers EXCEPT long, float, double, boolean
     - within the initialisation clause of a for loop, variables MUST be same type
     - Matching params order
         primitive
