@@ -35,5 +35,18 @@ public class SwitchExample {
             case 13:
                 System.out.println("Lucky 13 was short");
         }
+
+        String hairColour = "blond";
+        switch(hairColour) {
+            case "brunette":
+                System.out.println("brown hair");
+                break;
+            case "blond":
+                System.out.println("golden yellow hair");
+                break;
+            case "black":
+                System.out.println("black hair");
+                break;
+        }
     }
 }
