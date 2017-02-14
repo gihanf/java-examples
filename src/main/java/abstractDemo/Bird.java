@@ -4,7 +4,7 @@ public abstract class Bird {
     int feet;
 
     protected void fly() {
-        System.out.println("Bird is flying");
+        System.out.println("BirdDemo is flying");
     }
 
     public static void main(String[] args) {
