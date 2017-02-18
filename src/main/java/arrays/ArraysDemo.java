@@ -6,7 +6,7 @@ import java.util.List;
 public class ArraysDemo {
 
     public static void main(String[] args) {
-        // Lists backed by an array. Change content in one, contents of both the array and list change
+        /** Array backed list: Lists backed by an array. Change content in one, contents of both the array and list change **/
         String anArray[] = {"word1", "word2", "word3"};
         List<String> arrayBackedList = Arrays.asList(anArray);
         arrayBackedList.set(0, "new word");
@@ -18,11 +18,20 @@ public class ArraysDemo {
         System.out.println("First element of array: " + anArray[0]);
         System.out.println("First element of list: " + arrayBackedList.get(0));
 
-        // Arrays with same content are not equals, arrays with same reference are equal
+        /** Arrays with same content are not equals, arrays with same reference are equal **/
         int array[] = {1, 2, 053, 4};
         int arraySameContents[] = {1, 2, 3, 4};
         int arraySameReference[] = array;
         System.out.println("Are arrays with the same content equal? - " + array.equals(arraySameContents));
         System.out.println("Are arrays that point to the same reference equal? - " + array.equals(arraySameReference));
+
+        /** When declaring arrays, you MUST specify the size of the array **/
+        String stringArray[];
+        stringArray = new String[2];
+        stringArray[0] = "Asdas";
+        stringArray[1] = "second element";
+        for (String word : stringArray) {
+            System.out.println("word = " + word);
+        }
     }
 }
