@@ -1,31 +1,35 @@
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        Integer integer = 1;
+        List<String> healthResults;
+        CircularFifoQueue<String> queue = new CircularFifoQueue<>(3);
+        queue.add("oldest");
+        queue.add("middle");
+        queue.add("youngest");
 
-        if (1 == integer) {
-            System.out.println("can compare");
-        }
+        System.out.println("Size of queue is: " + queue.size());
+        System.out.println("queue = " + queue);
+        System.out.println("Peek yields: " + queue.peek());
 
-        String s1 = "Hello";
-        String s2 = "Hello";
+        queue.add("newbie");
+        System.out.println("queue = " + queue);
+        System.out.println("Peek yields: " + queue.peek());
 
-        if ("Hello" == s2) {
-            System.out.println("good");
-        }
+        // Preferred way of getting newest health result
+        int numResults = queue.size();
+        String newestResult = queue.get(numResults - 1);
 
-        LocalDateTime d = LocalDateTime.of(2015, 5, 10, 11, 22, 33);
-        Period p = Period.ofDays(1).ofYears(2);
-        d = d.minus(p);
-        DateTimeFormatter f = DateTimeFormatter.ofLocalizedDateTime(FormatStyle
-                .SHORT);
-        System.out.println(f.format(d));
+        healthResults = queue.stream().collect(Collectors.toList());
+        System.out.println("newestResult = " + newestResult);
+        System.out.println("healthResults = " + healthResults);
 
+        // Worse way of getting most recent health result
+        Collections.reverse(healthResults);
     }
 }
