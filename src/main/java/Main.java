@@ -1,5 +1,5 @@
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
@@ -31,5 +31,20 @@ public class Main {
 
         // Worse way of getting most recent health result
         Collections.reverse(healthResults);
+
+        TreeSet<String> tree = new TreeSet<>();
+        tree.add("one");
+        tree.add("One");
+        tree.add("ONE");
+        System.out.println("tree = " + tree);
+        System.out.println(tree.ceiling("On"));
+
+        Map m = new HashMap();
+        m.put(123, "456");
+        m.put("abc", "def");
+        m.put(4l, "asd");
+        System.out.println("m = " + m);
+        System.out.println(m.keySet());
+
     }
 }
