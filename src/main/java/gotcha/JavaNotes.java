@@ -99,5 +99,78 @@ public class JavaNotes {
      - Overriding v.s Hiding
         Overriding a method = a child method replaces the parent method in calls defined in both the parent and child
         Hiding method = hidden methods only replace parent methods in the calls defined in the child class
+
+     Chapter 10 - JDBC
+     JDBC Java Database Connectivity
+     ORM Object Relational Mapping
+     SQL Structured Query Language
+
+     4 Main interfaces in JDBC
+     Driver     - knows how to get a connection to the database
+     Connection - knows how to communicate with the database
+     Statement  - knows how to run sql
+     ResultSet  - knows what was returned by a SELECT query
+
+     Vendors (e.g. mysql, oracle) will implement these interfaces. They become available as a jar. When executing a
+     program this jar needs to be on the classpath)
+
+     JDBC url format
+
+     jdbc:postgres://localhost:5300/zoo
+     <protocol>:<vendor>:<datbase-specific-connection-details>
+
+     Connection
+     Two ways to get a connection to the database
+     - DatabaseManager (this course)
+     - DataSource (what we use in industry)
+
+     Statement
+     Two ways to get a statment
+     Statement stmt = connection.createStatement()
+
+     Statement stmt = connection.createStatment(
+                        ResultSet.TYPE_FORWARD_ONLY - TYPE_FORWARD_ONLY / TYPE_SCROLL_SENSITIVE / TYPE_SCROLL_INSENSITIVE
+                        ResultSet.CONCUR_READ_ONLY - CONCUR_READ_ONLY / CONCUR_UPDATEABLE
+
+     TYPE_FORWARD_ONLY - default. Can go through data in the order in which it is retrieved
+     TYPE_SCROLL_SENSITIVE - Allow going through data in any order. Result set changes when changes made to the db
+     TYPE_SCROLL_INSENSITIVE - Allow going through data in any order. Result set doesn't change when db changes
+
+     CONCUR_READ_ONLY - cannot modify the db using the ResultSet
+     CONCUR_UPDATEABLE - allows modification of db via ResultSet
+
+     Executing Statments
+     executeUpdate() - DELETE, INSERT, UPDATE, return type int
+     executeQuery() SELECT, return type ResultSet
+     execute() - SELECT, INSERT, UPDATE, DELETE, returns a boolean to tell you whether there is a ResultSet
+
+     Reading ResultSet
+     rs.next()
+     rs.getInt('columnName' or columnIndex)
+     rs.getString('columnName' or columnIndex)
+     rs.getTime
+     rs.getTimeStamp
+
+     JDBC starts counting index from 1 not 0
+
+     ResultSet          Return type
+     rs.next()          boolean
+     rs.previous()      boolean
+     rs.beforeFirst()   void
+     rs.first()         boolean
+     rs.last()          boolean
+     rs.afterLast()     void
+     rs.absolute(int)   boolean
+     rs.relative(int)   boolean
+
+     Every method apart from next() requires a SCROLLABLE ResultSet
+
+     JDBC automatically closes ResultSet when you run another SQL from the same Statement object
+
+     SQLExceptions
+     e.getMessage() - human readable
+     e.getSQLState() - returns a code as to what went wrong
+     e.getErrorCode() - returns database specific code
+
      */
 }
