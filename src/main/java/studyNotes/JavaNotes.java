@@ -1,4 +1,4 @@
-package gotcha;
+package studyNotes;
 
 public class JavaNotes {
     private String someString;
@@ -41,6 +41,7 @@ public class JavaNotes {
         System.out.println(mammals[2]);    // donkey
 
         Arrays have .length to see how many elements in the array
+        
     - Sorting Arrays
         Numbers sort before letters and uppercase sorts before lowercase
         (numbers -> capital letters -> lowercase letters)
@@ -99,6 +100,32 @@ public class JavaNotes {
      - Overriding v.s Hiding
         Overriding a method = a child method replaces the parent method in calls defined in both the parent and child
         Hiding method = hidden methods only replace parent methods in the calls defined in the child class
+
+     - Chapter 9 IO
+        Difference between IO and NIO2
+
+        Streams API uses depth-first searching (as opposed to breadth first searching) with max depth Integer.MAX_VALUE
+
+        Files.walk() is used to traverse a filesystem using streams. It will not follow symbolic links
+        Files.find(path, intdepth, bipredicate) allows you to search a directory
+
+        Files.list(path) to list the contents of the directory
+
+        Files.readAllLines() - reads all the lines of a path into memory.. dangerous if file is large
+        Files.lines() - creates a Stream<String> allowing you to traverse the contents in a functional way and not suffer from OOM errors
+
+        BasicFileAttributeView can be used to modify file attributes, e.g. setTimes(creation, modify, updated)
+        BasicFileAttributes can only be used to VIEW file attributes
+
+        path.resolve(Path), appends the paths together. However! when the path being resolved is absolute, it the one returned
+        path.toRealPath() actually checks that there is a real file related to this path object
+
+        Files.isSameFile(p1, p2) returns true if the files pointed to in the filesystem are the same, without regard to the contents
+
+        NIO2 advantages over legacy java.io.file
+        supports file system dependent attributes
+        allows you to traverse a directory tree directly
+        support symbolic links
 
      Chapter 10 - JDBC
      JDBC Java Database Connectivity
