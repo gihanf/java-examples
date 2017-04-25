@@ -41,7 +41,11 @@ public class JavaNotes {
         System.out.println(mammals[2]);    // donkey
 
         Arrays have .length to see how many elements in the array
-        
+
+    - Enums
+        semi-colon ; is required at the end of the list when each enum has an associated attribute(s)
+        A constructor is required and it cannot be anything other than private. 'private' is redundant
+
     - Sorting Arrays
         Numbers sort before letters and uppercase sorts before lowercase
         (numbers -> capital letters -> lowercase letters)
@@ -83,6 +87,9 @@ public class JavaNotes {
         3. The method in the child class may not throw a checked exception that is new or broader than the class of any exception thrown in the parent class method.
         4. If the method returns a value, it must be the same or a subclass of the method in the parent class, known as covariant return types.
 
+        Virtual method invocation says that the subclass method gets called at runtime rather than the type in the variable reference.
+        However, when referring to instance variables, the reference type does matter.
+
      - Abstract classes
         Abstract classes are public
         Abstract classes may contain zero methods
@@ -100,6 +107,21 @@ public class JavaNotes {
      - Overriding v.s Hiding
         Overriding a method = a child method replaces the parent method in calls defined in both the parent and child
         Hiding method = hidden methods only replace parent methods in the calls defined in the child class
+
+     - Chapter 2 Design Patterns and Principles
+        Singleton pattern
+            - constructor must be private
+            - public static method to retrieve instance, e.g. getInstance()
+            - typically uses lazy initialisation
+
+        Immutable objects
+            - Don't have any setter methods
+            - Members are marked private and final
+            - Methods are marked final as to not be overridden
+            - Make copies of objects rather than give callers direct access to members
+            - The class is marked final
+
+        Functional Interfaces - contain only one abstract method (default methods count)
 
      - Chapter 9 IO
         Difference between IO and NIO2
