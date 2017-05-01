@@ -123,6 +123,77 @@ public class JavaNotes {
 
         Functional Interfaces - contain only one abstract method (default methods count)
 
+     - Chapter 3 Generics and Collections
+
+        Collections
+        Common collection methods
+            boolean add(E element) - returns whether was successful
+            boolean remove(Object object) - returns whether was successful
+            boolean isEmpty()
+            int size()
+            clear() - discards all elements in the collection
+            boolean contains(Object object)
+
+        List (Ordered and allow duplicates)
+            ArrayList
+            LinkedList - implements List and Queue. Main benefit is that you can access, add or remove from the beginning or end in constant time
+            Vector - relic from the past. Does the same as ArrayList but slower because it is thread safe
+            Stack - relic from the past. Use an arrayDeque instead
+
+            List methods:
+            void add(E element)
+            void add(int index, E element) - Adds element at index and moves the rest toward the end
+            E get(int index)
+            int indexOf(Object o) - Returns first matching index or -1
+            int lastIndexOf(Object o) - Returns last matching index or -1
+            void remove(int index) - Removes element at index and moves the rest towards the front
+            E set(int index, E e) - Replaces element at index and returns the original
+
+        Set (Doesn't allow duplicates)
+            Main benefit is that adding elements and checking if an element is in the set both take constant time
+
+            HashSet -
+            TreeSet - stores elements in a sorted tree structure. TreeSet implements a special interface called NavigableSet
+
+        Queue
+            Assumed to be FIFO unless stated otherwise
+            LinkedList is an example implementation of a queue. It is a double ended queue. It implements the list and queue interfaces
+                The tradeoff is that it isn't as efficient as a "pure" queue, e.g. ArrayDeque
+
+            ArrayDeque methods
+            boolean add(E e) - Adds element to back of queue and returns true or thows exception
+            E element() - Returns next element or thows exception if empty queue
+            boolean offer(E e) - Adds element to back of queue and returns whether successful
+            E remove() - Removes and returns next element or throws an exception if empty queue
+            void push(E e) - Adds an element to the front of the queue
+            E poll() - Removes and returns next element or returns null if empty queue
+            E peek() - Returns next element or returns null if empty queue
+            E pop() - Removes and returns next element or throws an exception if empty queue
+
+            ArrayDeque can be used as a stack or a queue.
+                When using push, peek, poll - using it as a stack (LIFO)
+                When using offer, peek, poll - using it as a queue (FIFO)
+
+        Map (The main benefit is adding elements and retrieving them both take constant time). Does not implement the collection interface
+            LinkedHashMap
+            TreeMap
+            Hashtable
+
+            Map methods
+            void clear()
+            boolean isEmpty()
+            int size()
+            V get(Object key) - returns value mapped by key or null
+            V put(K key, V value) - adds or replaces key value pair
+            V remove(Object key) - removes and returns the object mapped by key. Returns null if none
+            boolean containsKey(Object key)
+            boolean containsValue(Object value)
+            Set<K> keySet() - returns set of all keys
+            Collection<V> values()
+
+        Which collections allow you to store nulls?
+            The ones that are sorted don't allow nulls
+
      - Chapter 9 IO
         Difference between IO and NIO2
 
