@@ -191,8 +191,25 @@ public class JavaNotes {
             Set<K> keySet() - returns set of all keys
             Collection<V> values()
 
+            map.merge(1, 3, (a,b) -> a + b);
+                if there is a value associated to key 1, merges the values using the lambda. If the key doesn't exist or the value is null
+                then the value '3' is placed as the value for key = 1
+
         Which collections allow you to store nulls?
             The ones that are sorted don't allow nulls
+            The ones that use null as special return value don't allow storage of nulls. E.g. Queue implementations
+
+        Comparable v.s Comparator
+
+        Comparable
+            from java.lang.Comparable package
+            uses method int compareTo(T other), returns:
+                - 0 when the current object is equal to the argument to compare to
+                - a number less than zero when the current object is smaller than the argument
+                - a number greater than zero when the current object is greater than the argument
+
+        Comparator
+            from java.util.Comparator package
 
      - Chapter 9 IO
         Difference between IO and NIO2
