@@ -1,6 +1,8 @@
 package streams.collectors;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -16,8 +18,12 @@ public class CollectorsExamples {
         System.out.println("partitioned = " + partitionedByEvenOdd);
 
         /** groupingBy is a collectors method: Collectors.groupingBy **/
-        Stream<String> stringStream = Stream.of("Peter", "Mahendar", "Robbie", "StinkyPete", "gihan", "Daniel", "melcar");
-        Map<Integer, List<String>> grouped = stringStream.collect(Collectors.groupingBy(String::length));
-        System.out.println("grouped = " + grouped);
+        Stream<String> stringStream = Stream.of("peter", "mahendar", "robbie", "stinkyPete", "gihan", "daniel", "melcar", "darren");
+        Map<Boolean, List<String>> groupedBy = stringStream.collect(Collectors.groupingBy(s -> s.startsWith("z")));
+        System.out.println("grouped = " + groupedBy);
+
+        Stream<String> stringStream2 = Stream.of("peter", "mahendar", "robbie", "stinkyPete", "gihan", "daniel", "melcar", "darren");
+        Map<Character, List<String>> collect = stringStream2.collect(Collectors.groupingBy(s -> s.charAt(0)));
+        System.out.println("collect = " + collect);
     }
 }
