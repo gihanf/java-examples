@@ -251,6 +251,9 @@ public class JavaNotes {
      Vendors (e.g. mysql, oracle) will implement these interfaces. They become available as a jar. When executing a
      program this jar needs to be on the classpath)
 
+     Driver implementations are required to be placed in META-INF/service directory since JDBC 4.0
+     Class.forName() was used by old drivers to the load the driver (prior to 4.0)
+
      JDBC url format
 
      jdbc:postgres://localhost:5300/zoo
@@ -265,6 +268,7 @@ public class JavaNotes {
      Two ways to get a statment
      Statement stmt = connection.createStatement()
 
+     Statement stmt = connection.createStatment(resultSetType, concurrencyMode)
      Statement stmt = connection.createStatment(
                         ResultSet.TYPE_FORWARD_ONLY - TYPE_FORWARD_ONLY / TYPE_SCROLL_SENSITIVE / TYPE_SCROLL_INSENSITIVE
                         ResultSet.CONCUR_READ_ONLY - CONCUR_READ_ONLY / CONCUR_UPDATEABLE
@@ -275,6 +279,8 @@ public class JavaNotes {
 
      CONCUR_READ_ONLY - cannot modify the db using the ResultSet
      CONCUR_UPDATEABLE - allows modification of db via ResultSet
+
+     If you try to create a statement with an unsupported mode, JDBC driver will downgrade the request to one that is supported.
 
      Executing Statments
      executeUpdate() - DELETE, INSERT, UPDATE, return type int
@@ -300,6 +306,10 @@ public class JavaNotes {
      rs.absolute(int)   boolean
      rs.relative(int)   boolean
 
+     Once you use the rs methods, the cursor is moved
+     Remember, can't use previous if the connection was made with TYPE_FORWARD only
+     Use the beforeFirst() and afterLast() methods to move the cursor
+     Use these methods to see if there is a result at these positions
      Every method apart from next() requires a SCROLLABLE ResultSet
 
      JDBC automatically closes ResultSet when you run another SQL from the same Statement object
