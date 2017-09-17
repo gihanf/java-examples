@@ -211,6 +211,21 @@ public class JavaNotes {
         Comparator
             from java.util.Comparator package
 
+     - Chapter 4 Functional Programming
+
+        Stream reductions need to look at each element in the stream
+
+        IntStream is used for primitive ints. Has these additional methods
+            average()
+            sum()
+
+        IntStream, DoubleStream, LongStream are the only primitive streams
+
+        peek() is a non interfering intermediate operation
+
+        intermediate operations only run when there is a terminal operation
+
+
      - Chapter 9 IO
         Difference between IO and NIO2
 
