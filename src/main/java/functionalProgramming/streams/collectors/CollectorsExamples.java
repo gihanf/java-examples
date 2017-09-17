@@ -1,9 +1,8 @@
-package streams.collectors;
+package functionalProgramming.streams.collectors;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.DoublePredicate;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;

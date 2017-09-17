@@ -51,7 +51,7 @@ public class Nio2 {
         System.out.println("p = " + p);
 
         try {
-            System.out.println("Reading the contents of a file using streams");
+            System.out.println("Reading the contents of a file using functionalProgramming.streams");
             Path file1Path = Paths.get(NIO2_DIR_AS_PATH.toString(), "/depth1/file1");
             Files.lines(file1Path)
                     .flatMap(line -> Stream.of(line.split(",")))

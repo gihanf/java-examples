@@ -219,7 +219,7 @@ public class JavaNotes {
             average()
             sum()
 
-        IntStream, DoubleStream, LongStream are the only primitive streams
+        IntStream, DoubleStream, LongStream are the only primitive functionalProgramming.streams
 
         peek() is a non interfering intermediate operation
 
@@ -231,7 +231,7 @@ public class JavaNotes {
 
         Streams API uses depth-first searching (as opposed to breadth first searching) with max depth Integer.MAX_VALUE
 
-        Files.walk() is used to traverse a filesystem using streams. It will not follow symbolic links
+        Files.walk() is used to traverse a filesystem using functionalProgramming.streams. It will not follow symbolic links
         Files.find(path, intdepth, bipredicate) allows you to search a directory
 
         Files.list(path) to list the contents of the directory
