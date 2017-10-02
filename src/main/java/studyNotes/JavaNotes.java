@@ -123,7 +123,7 @@ public class JavaNotes {
 
         Functional Interfaces - contain only one abstract method (default methods count)
 
-     - Chapter 3 Generics and Collections
+     - OCP Chapter 3 Generics and Collections
 
         Collections
         Common collection methods
@@ -211,7 +211,7 @@ public class JavaNotes {
         Comparator
             from java.util.Comparator package
 
-     - Chapter 4 Functional Programming
+     - OCP Chapter 4 Functional Programming
 
         Stream reductions need to look at each element in the stream
 
@@ -225,8 +225,51 @@ public class JavaNotes {
 
         intermediate operations only run when there is a terminal operation
 
+     - OCP Chapter 6 Exceptions and Assertions
 
-     - Chapter 9 IO
+        Closeable v.s AutoCloseable
+        Closeable interface introduced in Java
+        AutoCloseable throws Exception
+        Closeable throws IOException
+
+        Traditional try uses braces {}
+        If try is used, needs presence of either catch / finally
+        try-with-resources uses parenthesis ()
+        Order of execution
+
+        Finally example that rethrows - wipes out evidence of previous exceptions (unfortunate)
+        Suppressed Exceptions
+
+        In a single catch statement, exception e is ONLY allowed to be reassigned to exception of same type or subclass
+        In a multi catch statement, exceptions cannot be subclasses of one another. Not allowed to be reassigned at all
+
+        Example where java converts the exception to the correct type. Quiz 19
+
+        Assertions
+
+        Typically, only use assertions for testing and debugging, usually turned off for production
+
+        Have to be enabled explicitly when running your java application
+        java -ea ClassNameToRun
+        java -enableassertions ClassNameToRun
+        java -ea:<package-name>
+        java -ea:<package-name>... (... means any class is specified package or subclass)
+
+        java -da ClassNameToRun
+        java -disableassertions ClassNameToRun
+
+        // (enables all assertions except for on class)
+        java -ea:com.willey.demos... -da:com.wiley.demos.TestColors my.programs.Main
+
+        Syntax for usage in code
+        assert boolean_expression;
+        assert boolean_expression: error_message;
+
+        It's bad practice to modify outcomes in an assertion, e.g.
+        // Naughty!, not a good design
+        assert ++x > 10;
+
+     - OCP Chapter 9 IO
         Difference between IO and NIO2
 
         Streams API uses depth-first searching (as opposed to breadth first searching) with max depth Integer.MAX_VALUE
@@ -252,7 +295,7 @@ public class JavaNotes {
         allows you to traverse a directory tree directly
         support symbolic links
 
-     Chapter 10 - JDBC
+     - OCP Chapter 10 - JDBC
      JDBC Java Database Connectivity
      ORM Object Relational Mapping
      SQL Structured Query Language
@@ -280,7 +323,7 @@ public class JavaNotes {
      - DataSource (what we use in industry)
 
      Statement
-     Two ways to get a statment
+     Two ways to get a statement
      Statement stmt = connection.createStatement()
 
      Statement stmt = connection.createStatment(resultSetType, concurrencyMode)
