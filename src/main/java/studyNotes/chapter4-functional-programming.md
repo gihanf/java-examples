@@ -1,4 +1,4 @@
-# Functional Programming
+# OCP Chapter 4 - Functional Programming
 
 #### Common Functional Interfaces
 | **Functional Interface** | **# Parameters** | **Return Type** | **Single Abstract** Method |

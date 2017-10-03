@@ -11,6 +11,7 @@ public class TimeDemo {
     protected static Duration tripViewRefresh = Duration.ofMinutes(1);
     protected static Duration alternateTripViewRefresh = Duration.ofSeconds(60);
     protected static Duration lookAtMyWatch = Duration.ofSeconds(361);
+    protected static Duration fidget = Duration.ofMinutes(1);
 
     public static void main(String[] args) {
         /** Period are printed in format  P xY | xM | xD **/
@@ -30,5 +31,6 @@ public class TimeDemo {
         System.out.println("tripViewRefresh = " + tripViewRefresh);
         System.out.println("alternateTripViewRefresh = " + alternateTripViewRefresh);
         System.out.println("lookAtMyWatch = " + lookAtMyWatch);
+        System.out.println("fidget = " + fidget);
     }
 }

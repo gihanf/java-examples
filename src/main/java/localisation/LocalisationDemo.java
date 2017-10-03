@@ -1,6 +1,7 @@
 package localisation;
 
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class LocalisationDemo {
@@ -31,5 +32,8 @@ public class LocalisationDemo {
         ResourceBundle bundle = ResourceBundle.getBundle("Zoo", myLocale);
         System.out.println(bundle.getString("hello"));
         System.out.println(bundle.getString("open"));
+
+        Properties props = new Properties();
+        props.getProperty("java");
     }
 }
