@@ -98,14 +98,25 @@
 - Similar to what we saw before except with Strings
 
 #### 3. ObjectInputStream and ObjectOutputStream
-- Use these classes to write data model classes to disk.
-- objectOutputStream.writeObject(object)
-- objectInputStream.readObject()
+Use these classes for object serialization/deserialization
 
-##### 3.1 Serializable interface
+**_Serializing objects_**: objectOutputStream.writeObject(object)
+
+**_De-serializing objects_**: objectInputStream.readObject()
+- We know we've reached the end of the stream when an IOException is thrown
+- You could use while(in.available() > 0){} instead.. _however_ it only tells you the number of blocks that can be read without blocking the next caller. I.e. it can return 0 even when there are more bytes to read.
+
+##### 3.1 Understanding Object Creation
+When deserializing an object:
+- Constructor of the serialized object is **NOT** called
+- Java calls first no-arg constructor for the first nonserializable parent class
+     - skipping constructors of any serialized class in between
+     - static or default initializations are ignored
+
+##### 3.2 Serializable interface
 - It's a marker interface, there's no methods to implement
-- *transient* methods won't be serialized
-- *static* methods won't be serialized
+- *transient* members won't be serialized
+- *static* members won't be serialized
 - For a class that implements the Serializable interface, all instance members must also implement Serializable
 - Attempting to serialize an object that is not serializable will result in a NotSerializableException
 - Doesn't make sense to mark all classes as Serializable e.g. process heavy threads like Thread class.
@@ -118,7 +129,9 @@ private static final long serialVersionUID = 1L;
 
 #### 4. PrintStream and PrintWriter classes
 - high level stream classes that writes data as bytes / characters
-- Common methods:
+- **PrintStream**: operates on an outputStream and writes data as bytes
+- **PrintWriter**: operates on a writer insance and writes data as characters
+- Common **printWriter** methods:
     - print()
     - println()
     - format()
