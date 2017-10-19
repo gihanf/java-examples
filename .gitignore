@@ -4,3 +4,6 @@
 target
 
 *.iml
+modules.xml
+
+.DS_Store
