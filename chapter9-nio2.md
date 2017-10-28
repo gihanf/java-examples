@@ -94,10 +94,10 @@ File file = path.toFile();
 | ```path.isAbsolute()```     | Returns true if object references absolute path, false if relative<br> - dependant on the underlying filesystem|
 | ```path.toAbsolutePath()``` | Converts relative path to absolute path by joining to current working directory|
 | ```path.subPath()```        | Returns relative subpath of Path object referenced by inclusive start index and exclusive end index|
-| ```path.relativize()```     | Construct the relative path from one path object to another|
-| ```path.resolve()```        | Create a new path by joining an existing path to the current path |
+| ```path.relativize()```     | Construct the relative path from one path object to another<br> - throws IllegalArgumentException if both paths are not the same type (relative/absolute<br> - does not actually check whether file exists|
+| ```path.resolve()```        | Create a new path by joining an existing path to the current path<br> - does not clean up path variables<br> - if mixing with an absolute path, absolute path is returned |
 | ```path.normalize()```      | Eliminates redundancies in a path (e.g. by having multiple .. and . in a path)|
-| ```path.toRealPath()```     | Returns a reference to a real path within the file system.|
+| ```path.toRealPath()```     | Returns a reference to a real path within the file system.<br> - Have to catch IOException|
 
 ## Java Examples
 ### _toString(), getNameCount(), getName()_
@@ -179,6 +179,95 @@ Absolute Path1: C:\birds\egret.txt
  
 Path2 is Absolute? false
 Absolute Path2 /home/birds/condor.txt
+```
+
+### _relativize()_
+```java
+Path path1 = Paths.get("fish.txt");
+Path path2 = Paths.get("birds.txt");
+// give me a path that takes me to path2 from path1
+System.out.println(path1.relativize(path2));
+System.out.println(path2.relativize(path1));
+
+// Outputs
+..\birds.txt
+..\fish.txt
+```
+
+When both path values are absolute, method computes relative path from one absolute location to another, regardless of current working directory.
+```java
+Path path3 = Paths.get("E:\\habitat");
+Path path4 = Paths.get("E:\\sanctuary\\raven");
+System.out.println(path3.relativize(path4));
+System.out.println(path4.relativize(path3));
+
+// Outputs
+..\sanctuary\raven
+..\..\habitat
+```
+Requires *both* paths to be **absolute** or *both* paths to be **relative**
+A IllegalArgumentException will be thrown at runtime if they are mixed
+
+### _resolve()_
+
+the object on which the resolve() method is invoked becomes the basis of the new Path object, with the input argument being appended onto the Path
+
+```java
+final Path path1 = Paths.get("/cats/../panther");
+final Path path2 = Paths.get("food");
+System.out.println(path1.resolve(path2));
+
+// Outputs
+/cats/../panther/food
+
+```
+
+When both paths are absolute:
+```java
+final Path path1 = Paths.get("/turkey/food");
+final Path path2 = Paths.get("/tiger/cage");
+System.out.println(path1.resolve(path2));
+
+// Outputs
+/tiger/cage
+```
+
+### _normalize()_
+```java
+Path path3 = Paths.get("E:\\data");
+Path path4 = Paths.get("E:\\user\\home");
+
+Path relativePath = path3.relativize(path4);
+System.out.println(path3.resolve(relativePath));
+
+// Outputs
+E:\data\..\user\home
+
+System.out.println(path3.resolve(relativePath).normalize());
+
+// Outputs
+E:\user\home
+```
+
+### _toRealPath_
+```java
+// Assume:
+// - current working directory is /horse/schedule
+// - we have a file system in which we have a symbolic link from food.source
+// to food.txt , as described in the following relationship:
+// /zebra/food.source → /horse/food.txt
+
+try {
+    System.out.println(Paths.get("/zebra/food.source").toRealPath());
+ 
+    System.out.println(Paths.get(".././food.txt").toRealPath());
+} catch (IOException e) {
+// Handle file I/O exception...
+}
+
+// Outputs
+/horse/food.txt
+/horse/food.txt
 ```
 
 ## Methods on the *Files* class
