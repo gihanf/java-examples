@@ -93,7 +93,7 @@ File file = path.toFile();
 | ```path.getRoot()```        | Returns root element for path object, or null if the path is relative<br> - Returns **null** if path is relative |
 | ```path.isAbsolute()```     | Returns true if object references absolute path, false if relative<br> - dependant on the underlying filesystem|
 | ```path.toAbsolutePath()``` | Converts relative path to absolute path by joining to current working directory|
-| ```path.subPath()```        | Returns relative subpath of Path object referenced by inclusive start index and exclusive end index|
+| ```path.subPath()```        | Returns relative subpath of Path object referenced by inclusive start index and exclusive end index<br> - 0-indexed element does not include root directory<br> subPath(int inclusive, int exclusive)|
 | ```path.relativize()```     | Construct the relative path from one path object to another<br> - throws IllegalArgumentException if both paths are not the same type (relative/absolute<br> - does not actually check whether file exists|
 | ```path.resolve()```        | Create a new path by joining an existing path to the current path<br> - does not clean up path variables<br> - if mixing with an absolute path, absolute path is returned |
 | ```path.normalize()```      | Eliminates redundancies in a path (e.g. by having multiple .. and . in a path)|
@@ -180,6 +180,23 @@ Absolute Path1: C:\birds\egret.txt
 Path2 is Absolute? false
 Absolute Path2 /home/birds/condor.txt
 ```
+### _subPath(int inclusive, int exclusive)_
+```java
+Path path = Paths.get("/mammal/carnivore/raccoon.image");
+System.out.println("Path is: "+path);
+ 
+System.out.println("Subpath from 0 to 3 is: "+path.subpath(0,3));
+System.out.println("Subpath from 1 to 3 is: "+path.subpath(1,3));
+System.out.println("Subpath from 1 to 2 is: "+path.subpath(1,2));
+
+// Outputs
+Path is: /mammal/carnivore/raccoon.image
+Subpath from 0 to 3 is: mammal/carnivore/raccoon.image
+Subpath from 1 to 3 is: carnivore/raccoon.image
+Subpath from 1 to 2 is: carnivore
+```
+
+0-indexed element does not include root directory
 
 ### _relativize()_
 ```java
@@ -272,3 +289,181 @@ try {
 
 ## Methods on the *Files* class
 
+| <big>Method</big>                             | <big>Notes</big>                    |
+| --------------------------------------------- | :---------------------------------- |
+| ```Files.exists(Path)```                      | Returns true if file exists in filesystem|
+| ```Files.isSameFile(Path, Path)```            | Returns true if two paths refer to same file in filesystem|
+| ```Files.createDirectory(Path)```             | Creates a directory|
+| ```Files.createDirectories(Path)```           | Creates directory and all non existent parent directories|
+| ```Files.copy(Path, Path)```                  | Copies file or directory from one location to another<br> - throws checked IOException when file or directory does not exist or cannot be read<br> - directory copy is shallow (i.e. does not copy all containing files)<br> - by default, will traverse symbolic links (can be modified wi options NOFOLLOW_LINKS, REPLACE_EXISTING, COPY_ATTRIBUTES)<br> - will not overwrite a file or directory that already exists|
+| ```Files.move(Path, Path)```                  | Moves or renames a file or directory within the filesystem<br> - thows checked IOException when file or directory can't be found/moved<br>- follows symbolic links|
+| ```Files.delete(Path)```                      | Delete a file or directory in filesystem<br> - if target is symbolic link, link will be deleted|
+| ```Files.deleteIfExists(Path)```              | Like delete() but won't throw exception when file does not exist|
+| ```Files.newBufferredReader(Path, Charset)``` | Reads file at path using a bufferedReader object|
+| ```Files.newBufferredWriter(Path, Charset)``` | Writes file at path using a bufferedWriter object|
+| ```Files.readAllLines(Path)```                | Reads all lines from text file into a List<String><br> - be careful, this could be a  large list. OutOfMemory error could be thrown|
+
+## File Attributes
+| <big>Method</big>                             | <big>Notes</big>                    |
+| --------------------------------------------- | :---------------------------------- |
+| ```Files.isDirectory(Path)```                 | returns whether path refers to directory|
+| ```Files.isRegularFile(Path)```               | returns whether path refers to regular file<br> - if path is a symbolic link that refers to a regular file, this method will return true.|
+| ```Files.isSymbolicLink(Path)```              | returns whether path refers to a symbolic link, regardless of whether the link resolves a file/directory that exists|
+| ```Files.isHidden(Path)```                    | returns whether file/directory is hidden. E.g. in linux, a file beginning with '.'<br> - throws a checked IOException as there may be an I/O error reading underlying file information|
+| ```Files.isReadable(Path)```                  | Checks whether user has read permission on a file.<br> - does not throw exception if file doesn't exist, just returns false|
+| ```Files.isExecutable(Path)```                | Checks whether user has execute permission on a file.<br> - does not throw exception if file doesn't exist, just returns false|
+| ```Files.size(Path)```                        | Returns length of file in bytes as a long.<br> - throws checked IOException if file does not exist / process is unable to read file information.|
+| ```Files.getLastModifiedTime(Path)```         | Returns a FileTime object of when the file was last modified.|
+| ```Files.setLastModifiedTime(Path, FileTime)``` | Update the last modified time of a file.|
+| ```Files.getOwner(Path)```                    | Returns an instance of UserPrincipal representing owner<br> - can throw a checked IOException|
+| ```Files.setOwner(Path, UserPrincipal)```     | Sets the owner of a file.<br> - can throw a checked IOException|
+
+### Files methods - **isDirectory(), isRegularFile(), isSymbolicLink()**
+Assume the following:
+- /canine/coyote and /canine/types.txt exists
+- /coyotes is a symobolic link pointing to another path within the filesystem
+
+<img src="./src/main/java/studyNotes/images/ch9-ocp-files-methods.png"> </img>
+
+## Improving Access with Views
+- Accessing individual file attributes with single method calls can be expensive
+- It is more efficient to retrieve all the file metadata attributes in a single call
+- A *_view*_ is group of related attributes for a particular file system type. When reading multiple attributes of a file / directory, using a view is a performance advantage
+- To request a view, provide a **path** to the file / directory whose information you want to read as well as a **class object** which describes which type of view you want returned
+
+### Types of Views
+1. Files.readAttributes(Path, AttributeClass) - returns **read-only** view of the file attributes
+2. Files.getFileAttributeView() - returns underlying attribute view, and provides direct resource for **modifying** file information
+
+Both these methods can throw a checked IOException when the view class type is unsupported.
+
+<img src="./src/main/java/studyNotes/images/ch9-ocp-attributes-and-view-classes.png"> </img>
+
+#### BasicFileAttributes
+```java
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+
+public class BasicFileAttributesSample {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("/turtles/sea.txt");
+        BasicFileAttributes data = Files.readAttributes(path, BasicFileAttributes.class);
+
+        System.out.println("Is path a directory? " + data.isDirectory());
+        System.out.println("Is path a regular file? " + data.isRegularFile());
+        System.out.println("Is path a symbolic link? " + data.isSymbolicLink());
+        System.out.println("Path not a file, directory, nor symbolic link? " +data.isOther());
+
+        System.out.println("Size (in bytes): " + data.size());
+
+        System.out.println("Creation date/time: " + data.creationTime());
+        System.out.println("Last modified date/time: " + data.lastModifiedTime());
+        System.out.println("Last accessed date/time: " + data.lastAccessTime());
+        System.out.println("Unique file identifier (if available): " + data.fileKey());
+    }
+}
+```
+
+#### BasicFileAttributesView
+```java
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
+
+public class BasicFileAttributeViewSample {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("/turtles/sea.txt");
+
+        BasicFileAttributeView view = Files.getFileAttributeView(path,BasicFileAttributeView.class);
+        BasicFileAttributes data = view.readAttributes();
+
+        FileTime lastModifiedTime = FileTime.fromMillis(data.lastModifiedTime().toMillis()+10_000);
+
+        view.setTimes(lastModifiedTime,null,null);
+    }
+}
+```
+- NIO.2 API allows us to pass *null* for any value we don't wish to modify
+```java
+view.setTimes(lastModifiedTime, null, null)
+```
+## Stream Methods in NIO.2
+2 common search strategies associated with walking a directory tree:
+1. depth-first search
+2. breadth-first search
+- Streams API uses **depth-first** searching with a maximum depth of Integer.MAX_VALUE
+
+### Walking a Directory
+- Files.walk(path) method returns a Stream<Path> that traverses dir in depth-first manner, **lazily** (set of elements is built and read while the directory is being traversed.)
+- Files.walk(path) will **not** traverse symbolic links by default. Symbolic links could leave to circular paths (cycles)
+- Files.walk(path, int) allows you to specify the depth explicitly
+    
+```java
+Path path = Paths.get("/bigcats");
+ 
+try {
+    Files.walk(path)
+    .filter(p -> p.toString().endsWith(".java"))
+    .forEach(System.out::println);
+} catch (IOException e) {
+    // Handle file I/O exception...
+}
+
+// Sample output
+/bigcats/version1/backup/Lion.java
+/bigcats/version1/Lion.java
+/bigcats/version1/Tiger.java
+/bigcats/Lion.java
+```
+
+### Searching a Directory
+- Files.find(path, int, BiPredicate) behaves similar to Files.walk() except it requires the depth value to be explicitly set.
+- For the BiPredicate, the two objects are Path and BasicFileAttributes
+
+```java
+Path path = Paths.get("/bigcats");
+long dateFilter = 1420070400000l;
+ 
+try {
+    Stream<Path> stream = Files.find(path, 10,
+    (p,a) -> p.toString().endsWith(".java")
+    && a.lastModifiedTime().toMillis()>dateFilter);
+    stream.forEach(System.out::println);
+} catch (Exception e) {
+    // Handle file I/O exception...
+}
+```
+
+### Listing Directory Contents
+- Although you could use the Files.walk() with max depth of 1, Files.list(path) does this for you
+- Assume that the current working directory is /zoo:
+
+```java
+try {
+Path path = Paths.get("ducks");
+Files.list(path)
+    .filter(p -> !Files.isDirectory(p))
+    .map(p -> p.toAbsolutePath())
+    .forEach(System.out::println);
+} catch (IOException e) {
+    // Handle file I/O exception...
+}
+
+// Output
+/zoo/ducks/food.txt
+/zoo/ducks/food-backup.txt
+/zoo/ducks/weight.txt
+```
+
+### Printing File Contents
+- Files.readAllLines(path) could be used to do this but is vulnerable to an OutOfMemory error for large files.
+- Files.lines(path) is the alternative which returns a Stream<String>
+```java
+Path path = Paths.get("/fish/sharks.log");
+try {
+    Files.lines(path).forEach(System.out::println);
+} catch (IOException e) {
+    // Handle file I/O exception...
+}
+```
