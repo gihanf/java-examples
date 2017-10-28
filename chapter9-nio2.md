@@ -6,7 +6,7 @@
 
 ### Why is the *Path* interface superior to *File*?
 - Path supports symbolic links
-- 
+- File system independant
 
 *Path* is an interface because the JVM is then able to give you back an object that transparently handles system-specific details for a platform.
 A Path object is not a file but a representation of a location within a file system
