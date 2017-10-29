@@ -16,7 +16,7 @@ program this jar needs to be on the classpath)
 - Driver implementations are required to be placed in **META-INF/service** directory since JDBC 4.0.
 - Class.forName() was used by old drivers to the load the driver (prior to 4.0)
 
-####JDBC url format
+#### JDBC url format
 
 jdbc:postgres://localhost:5300/zoo
 
